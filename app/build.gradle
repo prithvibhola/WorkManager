@@ -1,0 +1,126 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'org.jetbrains.kotlin.android.extensions'
+
+ext {
+//    debug_key_alias = "androiddebugkey"
+//    debug_key_password = "android"
+//    debug_keystore_path = "../debug.keystore"
+//    debug_keystore_password = "android"
+//    release_key_alias = "password"
+//    release_key_password = "password"
+//    release_keystore_path = "../app/keystore.jks"
+//    release_keystore_password = "password"
+}
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "prithvi.io.mvvmstarter"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.compileSdk
+        versionCode versions.code
+        versionName versions.name
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+//    signingConfigs {
+//        debug {
+//            keyAlias debug_key_alias
+//            keyPassword debug_key_password
+//            storeFile file(debug_keystore_path)
+//            storePassword debug_keystore_password
+//        }
+//        release {
+//            keyAlias release_key_alias
+//            keyPassword release_key_password
+//            storeFile file(release_keystore_path)
+//            storePassword release_keystore_password
+//        }
+//    }
+
+    buildTypes {
+        debug {
+            multiDexEnabled true
+            minifyEnabled false
+            shrinkResources false
+            zipAlignEnabled false
+            applicationIdSuffix ".debug"
+//            signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            buildConfigField "String", "API_BASE_URL", "\"https://api.github.com\""
+        }
+
+        release {
+            multiDexEnabled true
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+//            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            buildConfigField "String", "API_BASE_URL", "\"https://api.github.com\""
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility versions.sourceCompat
+        targetCompatibility versions.targetCompat
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Kotlin
+    implementation deps.kotlin.stdlib
+    implementation deps.kotlin.reflect
+
+    // Android Support Libraries
+    implementation deps.support.appcompat
+    implementation deps.support.design
+    implementation deps.support.cardview
+    implementation deps.support.recyclerview
+    implementation deps.support.annotations
+    implementation deps.others.constraint
+
+    // Dagger
+    implementation deps.google.dagger
+    kapt deps.google.compiler
+    implementation deps.google.dagger_support
+    kapt deps.google.processor
+
+    // Rx
+    implementation deps.reactivex.rxjava
+    implementation deps.reactivex.rxandroid
+    implementation deps.reactivex.rxkotlin
+
+    // Retrofit and OkHttp
+    implementation deps.square.retrofit
+    implementation deps.square.moshi
+    implementation deps.square.rxjava2
+    implementation deps.square.kotlin
+    implementation deps.square.okhttp
+
+    // OkHttp interceptors
+    debugImplementation deps.facebook.stetho
+    debugImplementation deps.facebook.okhttp3
+    debugImplementation deps.others.chuck
+
+    // Android Architecture Component
+    implementation deps.androidarch.extensions
+    implementation deps.androidarch.viewmodel
+    implementation deps.androidarch.livedata
+    implementation deps.androidarch.common
+    implementation deps.androidarch.reactivestreams
+
+    // Others
+    implementation deps.square.timber
+    implementation deps.others.glide
+    implementation deps.others.progress
+
+    testImplementation deps.test.junit
+    androidTestImplementation deps.test.runner
+    androidTestImplementation deps.test.espresso
+}

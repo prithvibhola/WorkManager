@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Work Manager</string>
+    <string name="text_search_github_user">Search github user...</string>
+    <string name="user_profile_image">Github user profile image</string>
+</resources>

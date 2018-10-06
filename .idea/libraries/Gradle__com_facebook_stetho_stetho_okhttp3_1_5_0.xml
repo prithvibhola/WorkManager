@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Gradle: com.facebook.stetho:stetho-okhttp3-1.5.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/stetho-okhttp3-1.5.0.aar/6f2d596e1d7a85bbcbb5081bcc2a492d/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/stetho-okhttp3-1.5.0.aar/6f2d596e1d7a85bbcbb5081bcc2a492d/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.stetho/stetho-okhttp3/1.5.0/3b146571932ff4eb84f8997a15330c591167f09/stetho-okhttp3-1.5.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.stetho/stetho-okhttp3/1.5.0/761f620914f7a58289bd94aec89991bba46f4c6b/stetho-okhttp3-1.5.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
