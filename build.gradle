@@ -79,7 +79,12 @@ buildscript {
                     'viewmodel'      : "android.arch.lifecycle:viewmodel:${versions.android_arch}",
                     'livedata'       : "android.arch.lifecycle:livedata:${versions.android_arch}",
                     'common'         : "android.arch.lifecycle:common-java8:${versions.android_arch}",
-                    'reactivestreams': "android.arch.lifecycle:reactivestreams:${versions.android_arch}"
+                    'reactivestreams': "android.arch.lifecycle:reactivestreams:${versions.android_arch}",
+                    'room_runtime'   : "android.arch.persistence.room:runtime:${versions.android_arch}",
+                    'room_compiler'  : "android.arch.persistence.room:compiler:${versions.android_arch}",
+                    'room_rx_java'   : "android.arch.persistence.room:rxjava2:${versions.android_arch}",
+                    'room_testing'   : "android.arch.persistence.room:testing:${versions.android_arch}"
+
             ],
             others     : [
                     'chuck'     : "com.readystatesoftware.chuck:library:${versions.chuck}",
