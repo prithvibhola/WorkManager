@@ -9,10 +9,7 @@ import dagger.android.DaggerApplication
 import dagger.android.support.AndroidSupportInjectionModule
 import prithvi.io.workmanager.FlavourDI
 import prithvi.io.workmanager.WorkManagerApplication
-import prithvi.io.workmanager.di.module.ActivityModule
-import prithvi.io.workmanager.di.module.AppModule
-import prithvi.io.workmanager.di.module.NetModule
-import prithvi.io.workmanager.di.module.ViewModelModule
+import prithvi.io.workmanager.di.module.*
 import javax.inject.Singleton
 
 @Singleton
@@ -22,6 +19,7 @@ import javax.inject.Singleton
     ActivityModule::class,
     AppModule::class,
     NetModule::class,
+    RoomModule::class,
     ViewModelModule::class,
     FlavourDI::class
 ])
