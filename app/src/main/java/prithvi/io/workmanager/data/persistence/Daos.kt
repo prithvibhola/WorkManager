@@ -14,8 +14,8 @@ interface LocationDao {
     @Query("SELECT * FROM location WHERE id = :id")
     fun selectById(id: Long): Flowable<Location>
 
-    @Query("SELECT * FROM location WHERE id = :id")
-    fun selectById_(id: Long): Location
+    @Query("SELECT * FROM location")
+    fun selectAll(): Flowable<List<Location>>
 
     @Update
     fun update(location: Location): Int
