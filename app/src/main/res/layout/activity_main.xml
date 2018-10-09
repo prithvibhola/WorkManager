@@ -6,13 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.MainActivity">
 
-    <TextView
+    <Button
+        android:id="@+id/btnTrack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello, Work Manager"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Start tracking"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

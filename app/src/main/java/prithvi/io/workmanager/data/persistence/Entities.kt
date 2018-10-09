@@ -8,5 +8,6 @@ import android.arch.persistence.room.PrimaryKey
 data class Location(
         @PrimaryKey @ColumnInfo(name = "id") val id: Long,
         @ColumnInfo(name = "latitude") val latitude: String,
-        @ColumnInfo(name = "longitude") val longitude: String
+        @ColumnInfo(name = "longitude") val longitude: String,
+        @ColumnInfo(name = "timestamp") val timestamp: Long
 )

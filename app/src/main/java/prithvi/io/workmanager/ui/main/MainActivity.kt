@@ -1,6 +1,7 @@
 package prithvi.io.workmanager.ui.main
 
 import android.os.Bundle
+import kotlinx.android.synthetic.main.activity_main.*
 import prithvi.io.workmanager.R
 import prithvi.io.workmanager.ui.base.BaseActivity
 import prithvi.io.workmanager.utility.extentions.getViewModel
@@ -17,5 +18,10 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel = getViewModel(MainViewModel::class.java, viewModelFactory)
+
+
+        btnTrack.setOnClickListener { }
+
+
     }
 }

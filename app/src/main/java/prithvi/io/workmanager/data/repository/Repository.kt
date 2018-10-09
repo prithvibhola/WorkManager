@@ -5,5 +5,5 @@ import javax.inject.Singleton
 
 @Singleton
 class Repository @Inject constructor(
-
+        val location: LocationRepository
 )

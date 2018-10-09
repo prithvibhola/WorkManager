@@ -95,6 +95,9 @@ dependencies {
     implementation deps.google.dagger_support
     kapt deps.google.processor
 
+    // Google Services
+    implementation deps.google.location
+
     // Rx
     implementation deps.reactivex.rxjava
     implementation deps.reactivex.rxandroid
@@ -120,6 +123,7 @@ dependencies {
     implementation deps.androidarch.reactivestreams
     implementation deps.androidarch.room_runtime
     implementation deps.androidarch.room_rx_java
+    implementation deps.androidarch.work_manager
     kapt deps.androidarch.room_compiler
     testImplementation deps.androidarch.room_testing
 
