@@ -131,6 +131,10 @@ dependencies {
     implementation deps.square.timber
     implementation deps.others.glide
     implementation deps.others.progress
+    implementation(deps.others.permissions) {
+        exclude module: "support-v13"
+    }
+    kapt deps.others.permissions_processor
 
     testImplementation deps.test.junit
     androidTestImplementation deps.test.runner

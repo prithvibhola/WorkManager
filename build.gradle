@@ -26,6 +26,7 @@ buildscript {
             'android_arch'     : '1.1.1',
             'android_arch_work': '1.0.0-alpha09',
             'glide'            : '4.7.1',
+            'permission_dispatcher': '3.3.1',
             'progress_activity': '2.0.5',
             'sourceCompat'     : JavaVersion.VERSION_1_8,
             'targetCompat'     : JavaVersion.VERSION_1_8,
@@ -94,7 +95,9 @@ buildscript {
                     'chuck'     : "com.readystatesoftware.chuck:library:${versions.chuck}",
                     'constraint': "com.android.support.constraint:constraint-layout:${versions.constraint_layout}",
                     'glide'     : "com.github.bumptech.glide:glide:${versions.glide}",
-                    'progress'  : "com.github.vlonjatg:progress-activity:${versions.progress_activity}"
+                    'progress'  : "com.github.vlonjatg:progress-activity:${versions.progress_activity}",
+                    'permissions'          : "com.github.hotchemi:permissionsdispatcher:${versions.permission_dispatcher}",
+                    'permissions_processor': "com.github.hotchemi:permissionsdispatcher-processor:${versions.permission_dispatcher}"
             ],
             test       : [
                     'junit'   : "junit:junit:${versions.junit}",
