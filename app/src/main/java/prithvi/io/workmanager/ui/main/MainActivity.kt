@@ -33,9 +33,7 @@ class MainActivity : BaseActivity() {
 
         viewModel = getViewModel(MainViewModel::class.java, viewModelFactory)
 
-        btnTrack.setOnClickListener {
-
-        }
+        btnTrack.setOnClickListener { getFromLocationWithPermissionCheck() }
 
         observe(viewModel.enableLocation) {
             it ?: return@observe
