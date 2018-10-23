@@ -51,6 +51,23 @@ class MainActivity : BaseActivity() {
                 }
             }
         }
+
+        observe(viewModel.location) {
+            it ?: return@observe
+            when (it.status) {
+                Response.Status.LOADING -> toast("Loading loading")
+                Response.Status.SUCCESS -> {
+                    if (it.data == null) {
+                        toast("Location empty")
+                    } else {
+                        // Location recording
+                    }
+                }
+                Response.Status.ERROR -> {
+                    toast("Error loading location")
+                }
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

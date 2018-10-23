@@ -4,12 +4,17 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.arch.lifecycle.MutableLiveData
 import com.google.android.gms.location.*
+import io.reactivex.rxkotlin.subscribeBy
 import prithvi.io.workmanager.data.models.Response
+import prithvi.io.workmanager.data.persistence.Location
 import prithvi.io.workmanager.data.repository.Repository
 import prithvi.io.workmanager.ui.base.BaseViewModel
+import prithvi.io.workmanager.utility.extentions.addTo
+import prithvi.io.workmanager.utility.extentions.fromWorkerToMain
 import prithvi.io.workmanager.utility.extentions.locationCallback
 import prithvi.io.workmanager.utility.rx.Scheduler
 import timber.log.Timber
+import java.sql.Timestamp
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
@@ -19,11 +24,12 @@ class MainViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     val enableLocation: MutableLiveData<Response<Boolean>> = MutableLiveData()
+    val location: MutableLiveData<Response<Boolean>> = MutableLiveData()
 
     private var fusedLocationClient: FusedLocationProviderClient? = null
     private val locationRequest: LocationRequest = LocationRequest.create().apply {
         priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        interval = 30 * 1000
+        interval = 3 * 1000
         fastestInterval = 5 * 1000
     }
     private lateinit var locationCallback: LocationCallback
@@ -49,13 +55,28 @@ class MainViewModel @Inject constructor(
                 locationResult = {
                     val lastLocation = it?.lastLocation
                     if (lastLocation != null) {
-
+                        repository.location.saveLocation(Location(0, lastLocation.latitude, lastLocation.longitude, System.currentTimeMillis()))
                     } else {
-
+                        location.value = Response(Response.Status.ERROR, null, Throwable("Could not get your location. Try Again."))
                     }
                 }
         )
+        location.value = Response(Response.Status.LOADING, null, null)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(application)
         fusedLocationClient?.requestLocationUpdates(locationRequest, locationCallback, null)
+    }
+
+    fun getSavedLocation() {
+        repository.location.getSavedLocation()
+                .fromWorkerToMain(scheduler)
+                .subscribeBy(
+                        onNext = {
+
+                        },
+                        onError = {
+
+                        }
+                )
+                .addTo(getCompositeDisposable())
     }
 }
