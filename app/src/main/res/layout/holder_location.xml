@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/dimen_vertical_half_margin">
+
+    <TextView
+        android:id="@+id/tvId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        app:layout_constraintEnd_toStartOf="@+id/tvLatitude"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tvLatitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1234567"
+        app:layout_constraintEnd_toStartOf="@+id/tvLongitude"
+        app:layout_constraintStart_toEndOf="@+id/tvId" />
+
+    <TextView
+        android:id="@+id/tvLongitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1234567"
+        app:layout_constraintEnd_toStartOf="@+id/tvTime"
+        app:layout_constraintStart_toEndOf="@+id/tvLatitude" />
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="98765432"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvLongitude" />
+
+</android.support.constraint.ConstraintLayout>

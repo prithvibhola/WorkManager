@@ -3,6 +3,7 @@ package prithvi.io.workmanager.ui.main
 import android.Manifest
 import android.content.IntentSender
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import com.google.android.gms.common.api.ResolvableApiException
 import kotlinx.android.synthetic.main.activity_main.*
 import permissions.dispatcher.NeedsPermission
@@ -22,6 +23,7 @@ class MainActivity : BaseActivity() {
 
     @Inject lateinit var viewModelFactory: ViewModelFactory
     private lateinit var viewModel: MainViewModel
+    private lateinit var mAdapter: MainAdapter
 
     companion object {
         const val REQUEST_CHECK_SETTINGS = 100
@@ -32,6 +34,13 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel = getViewModel(MainViewModel::class.java, viewModelFactory)
+        viewModel.getSavedLocation()
+
+        mAdapter = MainAdapter(this, listOf())
+        rvLocation.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = mAdapter
+        }
 
         btnTrack.setOnClickListener { getFromLocationWithPermissionCheck() }
 
@@ -52,16 +61,27 @@ class MainActivity : BaseActivity() {
             }
         }
 
+        observe(viewModel.locationStatus) {
+            it ?: return@observe
+            when (it.status) {
+                Response.Status.LOADING -> toast("Loading location")
+                Response.Status.SUCCESS -> {
+                }
+                Response.Status.ERROR -> {
+                    toast("Error loading location")
+                }
+            }
+        }
+
         observe(viewModel.location) {
             it ?: return@observe
             when (it.status) {
-                Response.Status.LOADING -> toast("Loading loading")
+                Response.Status.LOADING -> {
+
+                }
                 Response.Status.SUCCESS -> {
-                    if (it.data == null) {
-                        toast("Location empty")
-                    } else {
-                        // Location recording
-                    }
+                    it.data ?: return@observe
+                    mAdapter.locations = it.data
                 }
                 Response.Status.ERROR -> {
                     toast("Error loading location")

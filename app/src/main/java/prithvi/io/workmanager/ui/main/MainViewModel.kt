@@ -24,7 +24,8 @@ class MainViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     val enableLocation: MutableLiveData<Response<Boolean>> = MutableLiveData()
-    val location: MutableLiveData<Response<Boolean>> = MutableLiveData()
+    val locationStatus: MutableLiveData<Response<Boolean>> = MutableLiveData()
+    val location: MutableLiveData<Response<List<Location>>> = MutableLiveData()
 
     private var fusedLocationClient: FusedLocationProviderClient? = null
     private val locationRequest: LocationRequest = LocationRequest.create().apply {
@@ -51,17 +52,17 @@ class MainViewModel @Inject constructor(
 
     @SuppressLint("MissingPermission")
     fun getLocation() {
+        locationStatus.value = Response.loading()
         locationCallback = locationCallback(
                 locationResult = {
                     val lastLocation = it?.lastLocation
                     if (lastLocation != null) {
                         repository.location.saveLocation(Location(0, lastLocation.latitude, lastLocation.longitude, System.currentTimeMillis()))
                     } else {
-                        location.value = Response(Response.Status.ERROR, null, Throwable("Could not get your location. Try Again."))
+                        locationStatus.value = Response.error(Throwable("Could not get your location. Try Again."))
                     }
                 }
         )
-        location.value = Response(Response.Status.LOADING, null, null)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(application)
         fusedLocationClient?.requestLocationUpdates(locationRequest, locationCallback, null)
     }
@@ -71,10 +72,10 @@ class MainViewModel @Inject constructor(
                 .fromWorkerToMain(scheduler)
                 .subscribeBy(
                         onNext = {
-
+                            location.value = Response.success(it)
                         },
                         onError = {
-
+                            location.value = Response.error(it)
                         }
                 )
                 .addTo(getCompositeDisposable())
