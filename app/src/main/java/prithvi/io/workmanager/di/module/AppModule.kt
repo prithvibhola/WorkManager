@@ -2,6 +2,7 @@ package prithvi.io.workmanager.di.module
 
 import android.app.Application
 import android.content.Context
+import com.google.android.gms.location.LocationRequest
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -22,5 +23,14 @@ abstract class AppModule {
         @Singleton
         @JvmStatic
         fun provideScheduler(): Scheduler = AppScheduler()
+
+        @Provides
+        @Singleton
+        @JvmStatic
+        fun locationRequest(): LocationRequest = LocationRequest.create().apply {
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            interval = 3 * 1000
+            fastestInterval = 5 * 1000
+        }
     }
 }

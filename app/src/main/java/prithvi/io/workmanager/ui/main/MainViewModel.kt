@@ -3,6 +3,8 @@ package prithvi.io.workmanager.ui.main
 import android.annotation.SuppressLint
 import android.app.Application
 import android.arch.lifecycle.MutableLiveData
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.android.gms.location.*
 import io.reactivex.rxkotlin.subscribeBy
 import prithvi.io.workmanager.data.models.Response
@@ -13,8 +15,10 @@ import prithvi.io.workmanager.utility.extentions.addTo
 import prithvi.io.workmanager.utility.extentions.fromWorkerToMain
 import prithvi.io.workmanager.utility.extentions.locationCallback
 import prithvi.io.workmanager.utility.rx.Scheduler
+import prithvi.io.workmanager.utility.workmanager.TrackLocationWorker
 import timber.log.Timber
 import java.sql.Timestamp
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
@@ -24,16 +28,9 @@ class MainViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     val enableLocation: MutableLiveData<Response<Boolean>> = MutableLiveData()
-    val locationStatus: MutableLiveData<Response<Boolean>> = MutableLiveData()
     val location: MutableLiveData<Response<List<Location>>> = MutableLiveData()
 
-    private var fusedLocationClient: FusedLocationProviderClient? = null
-    private val locationRequest: LocationRequest = LocationRequest.create().apply {
-        priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        interval = 3 * 1000
-        fastestInterval = 5 * 1000
-    }
-    private lateinit var locationCallback: LocationCallback
+    @Inject lateinit var locationRequest: LocationRequest
 
     fun locationSetup() {
         enableLocation.value = Response.loading()
@@ -50,21 +47,9 @@ class MainViewModel @Inject constructor(
                 }
     }
 
-    @SuppressLint("MissingPermission")
-    fun getLocation() {
-        locationStatus.value = Response.loading()
-        locationCallback = locationCallback(
-                locationResult = {
-                    val lastLocation = it?.lastLocation
-                    if (lastLocation != null) {
-                        repository.location.saveLocation(Location(0, lastLocation.latitude, lastLocation.longitude, System.currentTimeMillis()))
-                    } else {
-                        locationStatus.value = Response.error(Throwable("Could not get your location. Try Again."))
-                    }
-                }
-        )
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(application)
-        fusedLocationClient?.requestLocationUpdates(locationRequest, locationCallback, null)
+    fun trackLocation() {
+        val locationWorker = PeriodicWorkRequestBuilder<TrackLocationWorker>(5, TimeUnit.MINUTES).build()
+        WorkManager.getInstance().enqueue(locationWorker)
     }
 
     fun getSavedLocation() {

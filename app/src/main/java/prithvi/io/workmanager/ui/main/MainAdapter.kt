@@ -31,9 +31,7 @@ class MainAdapter(
     inner class ViewHolder(itemView: View) : BaseViewHolder(itemView) {
 
         override fun bind() {
-
             val location = locations[adapterPosition]
-
             itemView.apply {
                 tvId.text = location.id.toString()
                 tvLatitude.text = location.latitude.toString()

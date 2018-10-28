@@ -61,18 +61,6 @@ class MainActivity : BaseActivity() {
             }
         }
 
-        observe(viewModel.locationStatus) {
-            it ?: return@observe
-            when (it.status) {
-                Response.Status.LOADING -> toast("Loading location")
-                Response.Status.SUCCESS -> {
-                }
-                Response.Status.ERROR -> {
-                    toast("Error loading location")
-                }
-            }
-        }
-
         observe(viewModel.location) {
             it ?: return@observe
             when (it.status) {
@@ -96,6 +84,6 @@ class MainActivity : BaseActivity() {
     }
 
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    fun getFromLocation() = if (isGPSEnabled()) viewModel.getLocation() else viewModel.locationSetup()
+    fun getFromLocation() = if (isGPSEnabled()) viewModel.trackLocation() else viewModel.locationSetup()
 
 }
