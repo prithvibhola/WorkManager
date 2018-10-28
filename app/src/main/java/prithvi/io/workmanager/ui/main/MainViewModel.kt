@@ -24,13 +24,12 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
         private val repository: Repository,
         private val scheduler: Scheduler,
-        private val application: Application
+        private val application: Application,
+        private val locationRequest: LocationRequest
 ) : BaseViewModel() {
 
     val enableLocation: MutableLiveData<Response<Boolean>> = MutableLiveData()
     val location: MutableLiveData<Response<List<Location>>> = MutableLiveData()
-
-    @Inject lateinit var locationRequest: LocationRequest
 
     fun locationSetup() {
         enableLocation.value = Response.loading()

@@ -16,10 +16,8 @@ import javax.inject.Singleton
 class LocationRepository @Inject constructor(
         private val application: Application,
         private val database: Database,
-        private val repository: Repository
+        private val locationRequest: LocationRequest
 ) {
-
-    @Inject lateinit var locationRequest: LocationRequest
 
     private var fusedLocationClient: FusedLocationProviderClient? = null
     private lateinit var locationCallback: LocationCallback
@@ -30,7 +28,7 @@ class LocationRepository @Inject constructor(
                 locationResult = {
                     val lastLocation = it?.lastLocation
                     if (lastLocation != null) {
-                        repository.location.saveLocation(Location(0, lastLocation.latitude, lastLocation.longitude, System.currentTimeMillis()))
+                        saveLocation(Location(0, lastLocation.latitude, lastLocation.longitude, System.currentTimeMillis()))
                     } else {
                     }
                 }
