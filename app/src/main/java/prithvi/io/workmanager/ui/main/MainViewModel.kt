@@ -3,6 +3,7 @@ package prithvi.io.workmanager.ui.main
 import android.annotation.SuppressLint
 import android.app.Application
 import android.arch.lifecycle.MutableLiveData
+import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.google.android.gms.location.*
@@ -47,7 +48,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun trackLocation() {
-        val locationWorker = PeriodicWorkRequestBuilder<TrackLocationWorker>(5, TimeUnit.MINUTES).build()
+        val locationWorker = OneTimeWorkRequestBuilder<TrackLocationWorker>().build()
         WorkManager.getInstance().enqueue(locationWorker)
     }
 
