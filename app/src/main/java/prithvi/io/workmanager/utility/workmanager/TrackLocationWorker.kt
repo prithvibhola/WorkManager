@@ -10,11 +10,10 @@ class TrackLocationWorker @Inject constructor(
         context: Context,
         params: WorkerParameters,
         val repository: Repository
-) : Worker(context, params) {
+) : Worker() {
 
     override fun doWork(): Result {
         repository.location.getLocation()
-
         return Result.SUCCESS
     }
 }

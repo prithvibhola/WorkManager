@@ -1,12 +1,12 @@
 package prithvi.io.workmanager.ui.main
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.arch.lifecycle.MutableLiveData
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
-import com.google.android.gms.location.*
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
 import io.reactivex.rxkotlin.subscribeBy
 import prithvi.io.workmanager.data.models.Response
 import prithvi.io.workmanager.data.persistence.Location
@@ -14,12 +14,9 @@ import prithvi.io.workmanager.data.repository.Repository
 import prithvi.io.workmanager.ui.base.BaseViewModel
 import prithvi.io.workmanager.utility.extentions.addTo
 import prithvi.io.workmanager.utility.extentions.fromWorkerToMain
-import prithvi.io.workmanager.utility.extentions.locationCallback
 import prithvi.io.workmanager.utility.rx.Scheduler
 import prithvi.io.workmanager.utility.workmanager.TrackLocationWorker
 import timber.log.Timber
-import java.sql.Timestamp
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
@@ -48,8 +45,13 @@ class MainViewModel @Inject constructor(
     }
 
     fun trackLocation() {
-        val locationWorker = OneTimeWorkRequestBuilder<TrackLocationWorker>().build()
-        WorkManager.getInstance().enqueue(locationWorker)
+
+        try {
+            val locationWorker = OneTimeWorkRequest.Builder(TrackLocationWorker::class.java).build()
+            WorkManager.getInstance().enqueue(locationWorker)
+        } catch (e: Exception) {
+            Timber.e(e, "Cannot start work manager")
+        }
     }
 
     fun getSavedLocation() {
@@ -60,6 +62,7 @@ class MainViewModel @Inject constructor(
                             location.value = Response.success(it)
                         },
                         onError = {
+                            Timber.e(it, "Error in getting saved locations")
                             location.value = Response.error(it)
                         }
                 )
