@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("prithvi.io.mvvmstarter", appContext.packageName)
+        assertEquals("prithvi.io.workmanager", appContext.packageName)
     }
 }

@@ -18,7 +18,7 @@ ext {
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "prithvi.io.mvvmstarter"
+        applicationId "prithvi.io.workmanager"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.compileSdk
         versionCode versions.code

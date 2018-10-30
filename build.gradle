@@ -1,39 +1,39 @@
 buildscript {
 
     ext.versions = [
-            'minSdk'           : 17,
-            'compileSdk'       : 27,
+            'minSdk'               : 17,
+            'compileSdk'           : 27,
 
-            'code'             : 1,
-            'name'             : "1.0",
+            'code'                 : 1,
+            'name'                 : "1.0",
 
-            'android_gradle'   : '3.3.0-alpha07',
-            'play_services'    : '15.0.1',
-            'gms_service'      : '3.3.1',
-            'kotlin'           : '1.2.51',
-            'support_lib'      : '27.1.1',
-            'constraint_layout': '1.1.2',
-            'dagger'           : '2.14.1',
-            'rx_java'          : '2.1.9',
-            'rx_android'       : '2.0.2',
-            'rx_kotlin'        : '2.1.0',
-            'retrofit'         : '2.3.0',
-            'okhttp'           : '3.8.1',
-            'moshi_kotlin'     : '1.5.0',
-            'stetho'           : '1.5.0',
-            'timber'           : '4.6.0',
-            'chuck'            : '1.1.0',
-            'android_arch'     : '1.1.1',
-            'android_arch_work': '1.0.0-alpha09',
-            'glide'            : '4.7.1',
+            'android_gradle'       : '3.3.0-alpha07',
+            'play_services'        : '15.0.1',
+            'gms_service'          : '3.3.1',
+            'kotlin'               : '1.2.51',
+            'support_lib'          : '27.1.1',
+            'constraint_layout'    : '1.1.2',
+            'dagger'               : '2.14.1',
+            'rx_java'              : '2.1.9',
+            'rx_android'           : '2.0.2',
+            'rx_kotlin'            : '2.1.0',
+            'retrofit'             : '2.3.0',
+            'okhttp'               : '3.8.1',
+            'moshi_kotlin'         : '1.5.0',
+            'stetho'               : '1.5.0',
+            'timber'               : '4.6.0',
+            'chuck'                : '1.1.0',
+            'android_arch'         : '1.1.1',
+            'android_arch_work'    : '1.0.0-alpha10',
+            'glide'                : '4.7.1',
             'permission_dispatcher': '3.3.1',
-            'progress_activity': '2.0.5',
-            'sourceCompat'     : JavaVersion.VERSION_1_8,
-            'targetCompat'     : JavaVersion.VERSION_1_8,
+            'progress_activity'    : '2.0.5',
+            'sourceCompat'         : JavaVersion.VERSION_1_8,
+            'targetCompat'         : JavaVersion.VERSION_1_8,
 
-            'junit'            : '4.12',
-            'runner'           : '1.0.2',
-            'espresso'         : '3.0.2'
+            'junit'                : '4.12',
+            'runner'               : '1.0.2',
+            'espresso'             : '3.0.2'
     ]
 
 
@@ -92,10 +92,10 @@ buildscript {
 
             ],
             others     : [
-                    'chuck'     : "com.readystatesoftware.chuck:library:${versions.chuck}",
-                    'constraint': "com.android.support.constraint:constraint-layout:${versions.constraint_layout}",
-                    'glide'     : "com.github.bumptech.glide:glide:${versions.glide}",
-                    'progress'  : "com.github.vlonjatg:progress-activity:${versions.progress_activity}",
+                    'chuck'                : "com.readystatesoftware.chuck:library:${versions.chuck}",
+                    'constraint'           : "com.android.support.constraint:constraint-layout:${versions.constraint_layout}",
+                    'glide'                : "com.github.bumptech.glide:glide:${versions.glide}",
+                    'progress'             : "com.github.vlonjatg:progress-activity:${versions.progress_activity}",
                     'permissions'          : "com.github.hotchemi:permissionsdispatcher:${versions.permission_dispatcher}",
                     'permissions_processor': "com.github.hotchemi:permissionsdispatcher-processor:${versions.permission_dispatcher}"
             ],

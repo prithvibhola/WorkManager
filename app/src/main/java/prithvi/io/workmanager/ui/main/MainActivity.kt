@@ -1,9 +1,12 @@
 package prithvi.io.workmanager.ui.main
 
 import android.Manifest
+import android.arch.lifecycle.Observer
 import android.content.IntentSender
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.google.android.gms.common.api.ResolvableApiException
 import kotlinx.android.synthetic.main.activity_main.*
 import permissions.dispatcher.NeedsPermission
@@ -15,7 +18,9 @@ import prithvi.io.workmanager.utility.extentions.getViewModel
 import prithvi.io.workmanager.utility.extentions.isGPSEnabled
 import prithvi.io.workmanager.utility.extentions.observe
 import prithvi.io.workmanager.utility.extentions.toast
+import prithvi.io.workmanager.utility.workmanager.TrackLocationWorker
 import prithvi.io.workmanager.viewmodel.ViewModelFactory
+import timber.log.Timber
 import javax.inject.Inject
 
 @RuntimePermissions
@@ -24,6 +29,8 @@ class MainActivity : BaseActivity() {
     @Inject lateinit var viewModelFactory: ViewModelFactory
     private lateinit var viewModel: MainViewModel
     private lateinit var mAdapter: MainAdapter
+
+    lateinit var locationWorker: OneTimeWorkRequest
 
     companion object {
         const val REQUEST_CHECK_SETTINGS = 100
@@ -42,7 +49,7 @@ class MainActivity : BaseActivity() {
             adapter = mAdapter
         }
 
-        btnTrack.setOnClickListener { getFromLocationWithPermissionCheck() }
+        btnTrack.setOnClickListener { workManager() }
 
         observe(viewModel.enableLocation) {
             it ?: return@observe
@@ -74,6 +81,23 @@ class MainActivity : BaseActivity() {
                 Response.Status.ERROR -> {
                     toast("Error loading location")
                 }
+            }
+        }
+    }
+
+    fun workManager() {
+        locationWorker = OneTimeWorkRequest.Builder(TrackLocationWorker::class.java).build()
+        WorkManager.getInstance().enqueue(locationWorker)
+
+        observe(WorkManager.getInstance().getStatusByIdLiveData(locationWorker.id)) {
+            it ?: return@observe
+            when (it.state.name) {
+                "ENQUEUED" -> Timber.d("Work Manager ENQUEUED")
+                "RUNNING" -> Timber.d("Work Manager RUNNING")
+                "SUCCEEDED" -> Timber.d("Work Manager SUCCEEDED")
+                "FAILED" -> Timber.d("Work Manager FAILED")
+                "BLOCKED" -> Timber.d("Work Manager BLOCKED")
+                "CANCELLED" -> Timber.d("Work Manager CANCELLED")
             }
         }
     }

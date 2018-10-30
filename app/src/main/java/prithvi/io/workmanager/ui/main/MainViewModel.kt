@@ -45,13 +45,8 @@ class MainViewModel @Inject constructor(
     }
 
     fun trackLocation() {
-
-        try {
-            val locationWorker = OneTimeWorkRequest.Builder(TrackLocationWorker::class.java).build()
-            WorkManager.getInstance().enqueue(locationWorker)
-        } catch (e: Exception) {
-            Timber.e(e, "Cannot start work manager")
-        }
+        val locationWorker = OneTimeWorkRequest.Builder(TrackLocationWorker::class.java).build()
+        WorkManager.getInstance().enqueue(locationWorker)
     }
 
     fun getSavedLocation() {

@@ -1,4 +1,4 @@
-package prithvi.io.mvvmstarter
+package prithvi.io.workmanager
 
 import dagger.Module
 

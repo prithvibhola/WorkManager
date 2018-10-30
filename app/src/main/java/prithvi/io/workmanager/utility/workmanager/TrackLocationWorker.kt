@@ -8,9 +8,10 @@ import javax.inject.Inject
 
 class TrackLocationWorker @Inject constructor(
         context: Context,
-        params: WorkerParameters,
-        val repository: Repository
-) : Worker() {
+        workerParams: WorkerParameters
+) : Worker(context, workerParams) {
+
+    @Inject lateinit var repository: Repository
 
     override fun doWork(): Result {
         repository.location.getLocation()
