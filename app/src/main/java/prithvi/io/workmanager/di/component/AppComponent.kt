@@ -10,6 +10,7 @@ import dagger.android.support.AndroidSupportInjectionModule
 import prithvi.io.workmanager.FlavourDI
 import prithvi.io.workmanager.WorkManagerApplication
 import prithvi.io.workmanager.di.module.*
+import prithvi.io.workmanager.utility.workmanager.TrackLocationWorker
 import javax.inject.Singleton
 
 @Singleton
@@ -26,6 +27,8 @@ import javax.inject.Singleton
 interface AppComponent : AndroidInjector<DaggerApplication> {
 
     fun inject(application: WorkManagerApplication)
+
+    fun inject(worker: TrackLocationWorker)
 
     override fun inject(instance: DaggerApplication)
 

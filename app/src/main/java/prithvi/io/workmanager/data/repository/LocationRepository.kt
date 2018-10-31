@@ -2,6 +2,7 @@ package prithvi.io.workmanager.data.repository
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.os.Looper
 import com.google.android.gms.location.*
 import io.reactivex.Flowable
 import prithvi.io.workmanager.data.models.Response
@@ -23,7 +24,7 @@ class LocationRepository @Inject constructor(
     private lateinit var locationCallback: LocationCallback
 
     @SuppressLint("MissingPermission")
-    fun getLocation() {
+    fun getLocation(myLooper:Looper) {
         locationCallback = locationCallback(
                 locationResult = {
                     val lastLocation = it?.lastLocation
@@ -34,7 +35,8 @@ class LocationRepository @Inject constructor(
                 }
         )
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(application)
-        fusedLocationClient?.requestLocationUpdates(locationRequest, locationCallback, null)
+
+        fusedLocationClient?.requestLocationUpdates(locationRequest, locationCallback, myLooper)
     }
 
     private fun saveLocation(location: Location) = database.locationDao().insert(location)
