@@ -47,6 +47,12 @@ android {
 //        }
 //    }
 
+    kotlin {
+        experimental {
+            coroutines 'enable'
+        }
+    }
+
     buildTypes {
         debug {
             multiDexEnabled true
@@ -80,6 +86,8 @@ dependencies {
     // Kotlin
     implementation deps.kotlin.stdlib
     implementation deps.kotlin.reflect
+    implementation deps.kotlin.coroutines_core
+    implementation deps.kotlin.coroutines_android
 
     // Android Support Libraries
     implementation deps.support.appcompat

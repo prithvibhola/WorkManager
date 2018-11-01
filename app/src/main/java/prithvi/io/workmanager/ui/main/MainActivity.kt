@@ -4,6 +4,7 @@ import android.Manifest
 import android.arch.lifecycle.Observer
 import android.content.IntentSender
 import android.os.Bundle
+import android.provider.Contacts
 import android.support.v7.widget.LinearLayoutManager
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
@@ -49,7 +50,7 @@ class MainActivity : BaseActivity() {
             adapter = mAdapter
         }
 
-        btnTrack.setOnClickListener { workManager() }
+        btnTrack.setOnClickListener { getFromLocationWithPermissionCheck() }
 
         observe(viewModel.enableLocation) {
             it ?: return@observe
@@ -85,22 +86,22 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    fun workManager() {
-        locationWorker = OneTimeWorkRequest.Builder(TrackLocationWorker::class.java).build()
-        WorkManager.getInstance().enqueue(locationWorker)
-
-        observe(WorkManager.getInstance().getStatusByIdLiveData(locationWorker.id)) {
-            it ?: return@observe
-            when (it.state.name) {
-                "ENQUEUED" -> Timber.d("Work Manager ENQUEUED")
-                "RUNNING" -> Timber.d("Work Manager RUNNING")
-                "SUCCEEDED" -> Timber.d("Work Manager SUCCEEDED")
-                "FAILED" -> Timber.d("Work Manager FAILED")
-                "BLOCKED" -> Timber.d("Work Manager BLOCKED")
-                "CANCELLED" -> Timber.d("Work Manager CANCELLED")
-            }
-        }
-    }
+//    fun workManager() {
+//        locationWorker = OneTimeWorkRequest.Builder(TrackLocationWorker::class.java).build()
+//        WorkManager.getInstance().enqueue(locationWorker)
+//
+//        observe(WorkManager.getInstance().getStatusByIdLiveData(locationWorker.id)) {
+//            it ?: return@observe
+//            when (it.state.name) {
+//                "ENQUEUED" -> Timber.d("Work Manager ENQUEUED")
+//                "RUNNING" -> Timber.d("Work Manager RUNNING")
+//                "SUCCEEDED" -> Timber.d("Work Manager SUCCEEDED")
+//                "FAILED" -> Timber.d("Work Manager FAILED")
+//                "BLOCKED" -> Timber.d("Work Manager BLOCKED")
+//                "CANCELLED" -> Timber.d("Work Manager CANCELLED")
+//            }
+//        }
+//    }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)

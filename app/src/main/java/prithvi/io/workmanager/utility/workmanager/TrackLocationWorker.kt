@@ -13,20 +13,16 @@ class TrackLocationWorker @Inject constructor(
         workerParams: WorkerParameters
 ) : Worker(context, workerParams) {
 
+    @Inject lateinit var repository: Repository
+
     init {
         Provider.appComponent?.inject(this)
     }
 
-    @Inject lateinit var repository: Repository
-
     override fun doWork(): Result {
-
-        val handlerThread = HandlerThread("MyHandlerThread");
+        val handlerThread = HandlerThread("MyHandlerThread")
         handlerThread.start()
-        val looper = handlerThread.looper
-
-        repository.location.getLocation(looper)
-
+        repository.location.getLocation(handlerThread.looper)
         return Result.SUCCESS
     }
 }

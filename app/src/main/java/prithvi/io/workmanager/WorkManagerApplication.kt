@@ -20,7 +20,7 @@ class WorkManagerApplication : DaggerApplication() {
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
         val appComponent = DaggerAppComponent.builder().application(this).build()
         appComponent.inject(this)
-        Provider.appComponent = appComponent;
+        Provider.appComponent = appComponent
         return appComponent
     }
 }

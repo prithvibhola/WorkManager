@@ -10,7 +10,8 @@ buildscript {
             'android_gradle'       : '3.3.0-alpha07',
             'play_services'        : '15.0.1',
             'gms_service'          : '3.3.1',
-            'kotlin'               : '1.2.51',
+            'kotlin'               : '1.3.0',
+            'kotlin_coroutines'    : '1.0.0',
             'support_lib'          : '27.1.1',
             'constraint_layout'    : '1.1.2',
             'dagger'               : '2.14.1',
@@ -36,15 +37,16 @@ buildscript {
             'espresso'             : '3.0.2'
     ]
 
-
     ext.deps = [
             android    : [
                     'gradle': "com.android.tools.build:gradle:${versions.android_gradle}"
             ],
             kotlin     : [
-                    'stdlib' : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}",
-                    'reflect': "org.jetbrains.kotlin:kotlin-reflect:${versions.kotlin}",
-                    'gradle' : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+                    'stdlib'            : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}",
+                    'reflect'           : "org.jetbrains.kotlin:kotlin-reflect:${versions.kotlin}",
+                    'gradle'            : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
+                    'coroutines_core'   : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlin_coroutines}",
+                    'coroutines_android': "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlin_coroutines}"
             ],
             support    : [
                     'appcompat'   : "com.android.support:appcompat-v7:${versions.support_lib}",
@@ -89,7 +91,6 @@ buildscript {
                     'room_rx_java'   : "android.arch.persistence.room:rxjava2:${versions.android_arch}",
                     'room_testing'   : "android.arch.persistence.room:testing:${versions.android_arch}",
                     'work_manager'   : "android.arch.work:work-runtime-ktx:${versions.android_arch_work}"
-
             ],
             others     : [
                     'chuck'                : "com.readystatesoftware.chuck:library:${versions.chuck}",
