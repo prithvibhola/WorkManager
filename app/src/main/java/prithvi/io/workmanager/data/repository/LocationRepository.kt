@@ -22,11 +22,15 @@ class LocationRepository @Inject constructor(
         private val locationRequest: LocationRequest
 ) {
 
-    private var fusedLocationClient: FusedLocationProviderClient? = null
-    private lateinit var locationCallback: LocationCallback
+//    private var fusedLocationClient: FusedLocationProviderClient? = null
+//    private lateinit var locationCallback: LocationCallback
 
     @SuppressLint("MissingPermission")
     fun getLocation(looper: Looper) {
+
+        /*
+         * Fused Location when location updates are required
+         */
 //        locationCallback = locationCallback(
 //                locationResult = {
 //                    val lastLocation = it?.lastLocation
@@ -39,6 +43,9 @@ class LocationRepository @Inject constructor(
 //        fusedLocationClient = LocationServices.getFusedLocationProviderClient(application)
 //        fusedLocationClient?.requestLocationUpdates(locationRequest, locationCallback, looper)
 
+        /*
+         * One time location request
+         */
         LocationServices.getFusedLocationProviderClient(application)
                 ?.lastLocation
                 ?.addOnSuccessListener { location: android.location.Location? ->
@@ -47,12 +54,7 @@ class LocationRepository @Inject constructor(
                 }
     }
 
-    private fun saveLocation(location: Location) = GlobalScope.launch {
-        database.locationDao().insert(location)
-//        if (fusedLocationClient != null) {
-//            fusedLocationClient?.removeLocationUpdates(locationCallback)
-//        }
-    }
+    private fun saveLocation(location: Location) = GlobalScope.launch { database.locationDao().insert(location) }
 
     fun getSavedLocation(): Flowable<List<Location>> = database.locationDao().selectAll()
 }

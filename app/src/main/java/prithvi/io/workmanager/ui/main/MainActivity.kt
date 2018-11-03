@@ -1,12 +1,9 @@
 package prithvi.io.workmanager.ui.main
 
 import android.Manifest
-import android.arch.lifecycle.Observer
 import android.content.IntentSender
 import android.os.Bundle
-import android.provider.Contacts
 import android.support.v7.widget.LinearLayoutManager
-import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.google.android.gms.common.api.ResolvableApiException
 import io.reactivex.rxkotlin.subscribeBy
@@ -22,7 +19,6 @@ import prithvi.io.workmanager.utility.extentions.getViewModel
 import prithvi.io.workmanager.utility.extentions.isGPSEnabled
 import prithvi.io.workmanager.utility.extentions.observe
 import prithvi.io.workmanager.utility.extentions.toast
-import prithvi.io.workmanager.utility.workmanager.TrackLocationWorker
 import prithvi.io.workmanager.viewmodel.ViewModelFactory
 import timber.log.Timber
 import javax.inject.Inject
@@ -35,8 +31,6 @@ class MainActivity : BaseActivity() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var mAdapter: MainAdapter
-
-    lateinit var locationWorker: OneTimeWorkRequest
 
     companion object {
         const val REQUEST_CHECK_SETTINGS = 100
@@ -91,6 +85,18 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        bus.get(ActionEvent::class)
+                .subscribeBy(
+                        onNext = {
+                            when (it) {
+                                ActionEvent.ACTION_LISTEN_WORKER -> observeLocationWorker()
+                            }
+                        }
+                )
+    }
+
     private fun observeLocationWorker() {
         observe(WorkManager.getInstance().getStatusesByTagLiveData(MainViewModel.LOCATION_WORK_TAG)) {
             it ?: return@observe
@@ -103,18 +109,6 @@ class MainActivity : BaseActivity() {
                 "CANCELLED" -> Timber.d("Work Manager CANCELLED")
             }
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        bus.get(ActionEvent::class)
-                .subscribeBy(
-                        onNext = {
-                            when (it) {
-                                ActionEvent.ACTION_LISTEN_WORKER -> observeLocationWorker()
-                            }
-                        }
-                )
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
