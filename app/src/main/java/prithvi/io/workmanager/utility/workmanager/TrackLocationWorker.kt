@@ -6,6 +6,7 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import prithvi.io.workmanager.data.repository.Repository
 import prithvi.io.workmanager.di.module.Provider
+import prithvi.io.workmanager.utility.RxBus
 import javax.inject.Inject
 
 class TrackLocationWorker @Inject constructor(

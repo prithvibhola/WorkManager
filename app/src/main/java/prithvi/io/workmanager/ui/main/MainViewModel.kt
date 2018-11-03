@@ -2,6 +2,7 @@ package prithvi.io.workmanager.ui.main
 
 import android.app.Application
 import android.arch.lifecycle.MutableLiveData
+import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.google.android.gms.location.LocationRequest
@@ -12,6 +13,8 @@ import prithvi.io.workmanager.data.models.Response
 import prithvi.io.workmanager.data.persistence.Location
 import prithvi.io.workmanager.data.repository.Repository
 import prithvi.io.workmanager.ui.base.BaseViewModel
+import prithvi.io.workmanager.utility.ActionEvent
+import prithvi.io.workmanager.utility.RxBus
 import prithvi.io.workmanager.utility.extentions.addTo
 import prithvi.io.workmanager.utility.extentions.fromWorkerToMain
 import prithvi.io.workmanager.utility.rx.Scheduler
@@ -24,8 +27,14 @@ class MainViewModel @Inject constructor(
         private val repository: Repository,
         private val scheduler: Scheduler,
         private val application: Application,
-        private val locationRequest: LocationRequest
+        private val locationRequest: LocationRequest,
+        private val bus: RxBus<Any>
 ) : BaseViewModel() {
+
+    companion object {
+
+        const val LOCATION_WORK_TAG = "LOCATION_WORK_TAG"
+    }
 
     val enableLocation: MutableLiveData<Response<Boolean>> = MutableLiveData()
     val location: MutableLiveData<Response<List<Location>>> = MutableLiveData()
@@ -46,8 +55,9 @@ class MainViewModel @Inject constructor(
     }
 
     fun trackLocation() {
-        val locationWorker = PeriodicWorkRequestBuilder<TrackLocationWorker>(15, TimeUnit.MINUTES).build()
+        val locationWorker = PeriodicWorkRequestBuilder<TrackLocationWorker>(15, TimeUnit.MINUTES).addTag(LOCATION_WORK_TAG).build()
         WorkManager.getInstance().enqueue(locationWorker)
+        bus.send(ActionEvent.ACTION_LISTEN_WORKER)
     }
 
     fun getSavedLocation() {

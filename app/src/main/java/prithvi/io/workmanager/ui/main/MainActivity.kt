@@ -9,12 +9,15 @@ import android.support.v7.widget.LinearLayoutManager
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.google.android.gms.common.api.ResolvableApiException
+import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_main.*
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.RuntimePermissions
 import prithvi.io.workmanager.R
 import prithvi.io.workmanager.data.models.Response
 import prithvi.io.workmanager.ui.base.BaseActivity
+import prithvi.io.workmanager.utility.ActionEvent
+import prithvi.io.workmanager.utility.RxBus
 import prithvi.io.workmanager.utility.extentions.getViewModel
 import prithvi.io.workmanager.utility.extentions.isGPSEnabled
 import prithvi.io.workmanager.utility.extentions.observe
@@ -28,6 +31,8 @@ import javax.inject.Inject
 class MainActivity : BaseActivity() {
 
     @Inject lateinit var viewModelFactory: ViewModelFactory
+    @Inject lateinit var bus: RxBus<Any>
+
     private lateinit var viewModel: MainViewModel
     private lateinit var mAdapter: MainAdapter
 
@@ -86,22 +91,31 @@ class MainActivity : BaseActivity() {
         }
     }
 
-//    fun workManager() {
-//        locationWorker = OneTimeWorkRequest.Builder(TrackLocationWorker::class.java).build()
-//        WorkManager.getInstance().enqueue(locationWorker)
-//
-//        observe(WorkManager.getInstance().getStatusByIdLiveData(locationWorker.id)) {
-//            it ?: return@observe
-//            when (it.state.name) {
-//                "ENQUEUED" -> Timber.d("Work Manager ENQUEUED")
-//                "RUNNING" -> Timber.d("Work Manager RUNNING")
-//                "SUCCEEDED" -> Timber.d("Work Manager SUCCEEDED")
-//                "FAILED" -> Timber.d("Work Manager FAILED")
-//                "BLOCKED" -> Timber.d("Work Manager BLOCKED")
-//                "CANCELLED" -> Timber.d("Work Manager CANCELLED")
-//            }
-//        }
-//    }
+    private fun observeLocationWorker() {
+        observe(WorkManager.getInstance().getStatusesByTagLiveData(MainViewModel.LOCATION_WORK_TAG)) {
+            it ?: return@observe
+            when (it[0].state.name) {
+                "ENQUEUED" -> Timber.d("Work Manager ENQUEUED")
+                "RUNNING" -> Timber.d("Work Manager RUNNING")
+                "SUCCEEDED" -> Timber.d("Work Manager SUCCEEDED")
+                "FAILED" -> Timber.d("Work Manager FAILED")
+                "BLOCKED" -> Timber.d("Work Manager BLOCKED")
+                "CANCELLED" -> Timber.d("Work Manager CANCELLED")
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        bus.get(ActionEvent::class)
+                .subscribeBy(
+                        onNext = {
+                            when (it) {
+                                ActionEvent.ACTION_LISTEN_WORKER -> observeLocationWorker()
+                            }
+                        }
+                )
+    }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)

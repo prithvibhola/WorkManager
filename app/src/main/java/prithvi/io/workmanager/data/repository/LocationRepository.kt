@@ -47,7 +47,12 @@ class LocationRepository @Inject constructor(
                 }
     }
 
-    private fun saveLocation(location: Location) = GlobalScope.launch { database.locationDao().insert(location) }
+    private fun saveLocation(location: Location) = GlobalScope.launch {
+        database.locationDao().insert(location)
+//        if (fusedLocationClient != null) {
+//            fusedLocationClient?.removeLocationUpdates(locationCallback)
+//        }
+    }
 
     fun getSavedLocation(): Flowable<List<Location>> = database.locationDao().selectAll()
 }

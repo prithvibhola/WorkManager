@@ -6,6 +6,7 @@ import com.google.android.gms.location.LocationRequest
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import prithvi.io.workmanager.utility.RxBus
 import prithvi.io.workmanager.utility.rx.AppScheduler
 import prithvi.io.workmanager.utility.rx.Scheduler
 import javax.inject.Singleton
@@ -32,5 +33,10 @@ abstract class AppModule {
             interval = 3 * 1000
             fastestInterval = 5 * 1000
         }
+
+        @Provides
+        @Singleton
+        @JvmStatic
+        fun provideRxBus(): RxBus<Any> = RxBus()
     }
 }
