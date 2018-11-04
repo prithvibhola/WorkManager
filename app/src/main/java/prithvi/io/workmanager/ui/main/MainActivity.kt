@@ -47,7 +47,7 @@ class MainActivity : BaseActivity() {
         }
 
         btnTrack.setOnClickListener { getFromLocationWithPermissionCheck() }
-        btnStop.setOnClickListener { getFromLocationWithPermissionCheck() }
+        btnStop.setOnClickListener { viewModel.stopTrackLocation() }
 
         observe(viewModel.enableLocation) {
             it ?: return@observe
@@ -93,33 +93,6 @@ class MainActivity : BaseActivity() {
             Timber.d("Work Manager Status: $status")
         }
     }
-
-//    override fun onStart() {
-//        super.onStart()
-//        bus.get(ActionEvent::class)
-//                .subscribeBy(
-//                        onNext = {
-//                            when (it) {
-//                                ActionEvent.ACTION_LISTEN_WORKER -> observeLocationWorker()
-//                            }
-//                        }
-//                )
-//    }
-
-//    private fun observeLocationWorker() {
-//        observe(WorkManager.getInstance().getStatusesByTagLiveData(MainViewModel.LOCATION_WORK_TAG)) {
-//            it ?: return@observe
-//            if (it.isEmpty()) return@observe
-//            when (it[0].state.name) {
-//                "ENQUEUED" -> Timber.d("Work Manager ENQUEUED")
-//                "RUNNING" -> Timber.d("Work Manager RUNNING")
-//                "SUCCEEDED" -> Timber.d("Work Manager SUCCEEDED")
-//                "FAILED" -> Timber.d("Work Manager FAILED")
-//                "BLOCKED" -> Timber.d("Work Manager BLOCKED")
-//                "CANCELLED" -> Timber.d("Work Manager CANCELLED")
-//            }
-//        }
-//    }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)

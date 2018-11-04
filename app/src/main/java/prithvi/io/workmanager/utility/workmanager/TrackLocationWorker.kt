@@ -1,12 +1,10 @@
 package prithvi.io.workmanager.utility.workmanager
 
 import android.content.Context
-import android.os.HandlerThread
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import prithvi.io.workmanager.data.repository.Repository
 import prithvi.io.workmanager.di.module.Provider
-import prithvi.io.workmanager.utility.RxBus
 import javax.inject.Inject
 
 class TrackLocationWorker @Inject constructor(
@@ -21,9 +19,7 @@ class TrackLocationWorker @Inject constructor(
     }
 
     override fun doWork(): Result {
-        val handlerThread = HandlerThread("MyHandlerThread")
-        handlerThread.start()
-        repository.location.getLocation(handlerThread.looper)
+        repository.location.getLocation()
         return Result.SUCCESS
     }
 }
