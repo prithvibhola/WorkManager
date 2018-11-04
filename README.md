@@ -3,7 +3,7 @@
 > A simple example to demonstrate the working of the [Work Manager](https://developer.android.com/topic/libraries/architecture/workmanager/).
 > This android application gets the location of user in every 15 minutes and stores it into local database using Room(Android Architecture Component).
 
-<img src="/screenshots/Screenshot_20181103-211813.png" width="400"/>
+<img src="/screenshots/Screenshot_1541316201.png" width="400"/>
 
 # Project uses:
 - [Koltin](https://github.com/JetBrains/kotlin)
