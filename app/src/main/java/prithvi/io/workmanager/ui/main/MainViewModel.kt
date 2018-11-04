@@ -32,7 +32,6 @@ class MainViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     companion object {
-
         const val LOCATION_WORK_TAG = "LOCATION_WORK_TAG"
     }
 
@@ -57,7 +56,6 @@ class MainViewModel @Inject constructor(
     fun trackLocation() {
         val locationWorker = PeriodicWorkRequestBuilder<TrackLocationWorker>(15, TimeUnit.MINUTES).addTag(LOCATION_WORK_TAG).build()
         WorkManager.getInstance().enqueue(locationWorker)
-        bus.send(ActionEvent.ACTION_LISTEN_WORKER)
     }
 
     fun getSavedLocation() {

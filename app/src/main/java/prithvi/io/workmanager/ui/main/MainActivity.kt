@@ -15,10 +15,7 @@ import prithvi.io.workmanager.data.models.Response
 import prithvi.io.workmanager.ui.base.BaseActivity
 import prithvi.io.workmanager.utility.ActionEvent
 import prithvi.io.workmanager.utility.RxBus
-import prithvi.io.workmanager.utility.extentions.getViewModel
-import prithvi.io.workmanager.utility.extentions.isGPSEnabled
-import prithvi.io.workmanager.utility.extentions.observe
-import prithvi.io.workmanager.utility.extentions.toast
+import prithvi.io.workmanager.utility.extentions.*
 import prithvi.io.workmanager.viewmodel.ViewModelFactory
 import timber.log.Timber
 import javax.inject.Inject
@@ -50,6 +47,7 @@ class MainActivity : BaseActivity() {
         }
 
         btnTrack.setOnClickListener { getFromLocationWithPermissionCheck() }
+        btnStop.setOnClickListener { getFromLocationWithPermissionCheck() }
 
         observe(viewModel.enableLocation) {
             it ?: return@observe
@@ -83,33 +81,45 @@ class MainActivity : BaseActivity() {
                 }
             }
         }
-    }
 
-    override fun onStart() {
-        super.onStart()
-        bus.get(ActionEvent::class)
-                .subscribeBy(
-                        onNext = {
-                            when (it) {
-                                ActionEvent.ACTION_LISTEN_WORKER -> observeLocationWorker()
-                            }
-                        }
-                )
-    }
-
-    private fun observeLocationWorker() {
         observe(WorkManager.getInstance().getStatusesByTagLiveData(MainViewModel.LOCATION_WORK_TAG)) {
             it ?: return@observe
-            when (it[0].state.name) {
-                "ENQUEUED" -> Timber.d("Work Manager ENQUEUED")
-                "RUNNING" -> Timber.d("Work Manager RUNNING")
-                "SUCCEEDED" -> Timber.d("Work Manager SUCCEEDED")
-                "FAILED" -> Timber.d("Work Manager FAILED")
-                "BLOCKED" -> Timber.d("Work Manager BLOCKED")
-                "CANCELLED" -> Timber.d("Work Manager CANCELLED")
+            if (it.isEmpty()) return@observe
+            val status = it[0].state.name
+            tvWorkStatus.apply {
+                text = "Work Manager Status: $status"
+                visible = true
             }
+            Timber.d("Work Manager Status: $status")
         }
     }
+
+//    override fun onStart() {
+//        super.onStart()
+//        bus.get(ActionEvent::class)
+//                .subscribeBy(
+//                        onNext = {
+//                            when (it) {
+//                                ActionEvent.ACTION_LISTEN_WORKER -> observeLocationWorker()
+//                            }
+//                        }
+//                )
+//    }
+
+//    private fun observeLocationWorker() {
+//        observe(WorkManager.getInstance().getStatusesByTagLiveData(MainViewModel.LOCATION_WORK_TAG)) {
+//            it ?: return@observe
+//            if (it.isEmpty()) return@observe
+//            when (it[0].state.name) {
+//                "ENQUEUED" -> Timber.d("Work Manager ENQUEUED")
+//                "RUNNING" -> Timber.d("Work Manager RUNNING")
+//                "SUCCEEDED" -> Timber.d("Work Manager SUCCEEDED")
+//                "FAILED" -> Timber.d("Work Manager FAILED")
+//                "BLOCKED" -> Timber.d("Work Manager BLOCKED")
+//                "CANCELLED" -> Timber.d("Work Manager CANCELLED")
+//            }
+//        }
+//    }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)

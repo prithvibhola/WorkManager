@@ -11,16 +11,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Start tracking"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnStop"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop tracking"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnTrack" />
+
+    <TextView
+        android:id="@+id/tvWorkStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_vertical_half_margin"
+        android:text="Work Manager status: Running"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/btnTrack" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvLocation"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:padding="@dimen/dimen_vertical_half_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnTrack" />
+        app:layout_constraintTop_toBottomOf="@+id/tvWorkStatus" />
 
 </android.support.constraint.ConstraintLayout>
