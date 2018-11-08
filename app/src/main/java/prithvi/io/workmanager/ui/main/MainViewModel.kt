@@ -54,7 +54,7 @@ class MainViewModel @Inject constructor(
 
     fun trackLocation() {
         val locationWorker = PeriodicWorkRequestBuilder<TrackLocationWorker>(15, TimeUnit.MINUTES).addTag(LOCATION_WORK_TAG).build()
-        WorkManager.getInstance().enqueueUniquePeriodicWork("Track Location", ExistingPeriodicWorkPolicy.KEEP, locationWorker)
+        WorkManager.getInstance().enqueueUniquePeriodicWork(LOCATION_WORK_TAG, ExistingPeriodicWorkPolicy.KEEP, locationWorker)
     }
 
     fun stopTrackLocation() {

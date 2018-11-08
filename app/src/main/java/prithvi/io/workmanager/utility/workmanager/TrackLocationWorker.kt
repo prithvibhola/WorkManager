@@ -5,6 +5,7 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import prithvi.io.workmanager.data.repository.Repository
 import prithvi.io.workmanager.di.module.Provider
+import timber.log.Timber
 import javax.inject.Inject
 
 class TrackLocationWorker @Inject constructor(
@@ -19,7 +20,12 @@ class TrackLocationWorker @Inject constructor(
     }
 
     override fun doWork(): Result {
-        repository.location.getLocation()
-        return Result.SUCCESS
+        return try {
+            repository.location.getLocation()
+            Result.SUCCESS
+        } catch (e: Exception) {
+            Timber.e(e, "Failure in doing work")
+            Result.FAILURE
+        }
     }
 }
